@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	   		http://www.springframework.org/schema/context
+	   		http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <!-- load property file -->
+    <context:property-placeholder location="classpath:sport.properties"/>
+
+    <bean id="myLoggerConfig" class="com.eigendaksh.springdemo.MyLoggerConfig" init-method="initLogger">
+        <property name="rootLoggerLevel" value="FINE" />
+        <property name="printedLoggerLevel" value="FINE"/>
+    </bean>
+
+    <bean id="myFortune"
+          class="com.eigendaksh.springdemo.fortune.HappyFortuneService">
+    </bean>
+
+    <bean id="myCoach"
+          class="com.eigendaksh.springdemo.coach.BaseBallCoach">
+        <!-- Set up constructor injection-->
+        <constructor-arg ref="myFortune"/>
+    </bean>
+
+    <bean id="cricketCoach"
+          class="com.eigendaksh.springdemo.coach.CricketCoach">
+        <!-- Setter Injection -->
+        <property name="fortuneService" ref="myFortune"/>
+        <!-- Literal Injection -->
+        <property name="name" value="${foo.name}"/>
+        <property name="team" value="${foo.team}"/>
+    </bean>
+
+</beans>
